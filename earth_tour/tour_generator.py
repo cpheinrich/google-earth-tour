@@ -135,7 +135,8 @@ class TourGenerator(object):
             self.output_path), 'tour_images')
         os.makedirs(output_dir, exist_ok=True)
         # Bounding box for screenshot. Adjust depending on the location of your google earth app
-        bbox = (300, 140, 1600, 900)
+        capture_box=(628,232,1396,816)
+        resize_box = (512,384)
         for index, row in self.data.iterrows():
             # Directory for property uses address with spaces converted to underscores
             prop_dir = os.path.join(
@@ -147,7 +148,8 @@ class TourGenerator(object):
                 try:
                     img_path = os.path.join(prop_dir, '{}.png'.format(year))
                     start = time.time()
-                    im = ImageGrab.grab(bbox=bbox)
+                    im = ImageGrab.grab(bbox=capture_box)
+                    im = im.resize(resize_box)
                     print('Captured image for path {}'.format(img_path))
                     im.save(img_path)
                     cap_time = time.time() - start
